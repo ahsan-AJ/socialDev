@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const gravatar = require('gravatar');
+const {jwtKey} = require('../config/keys');
+const jwt = require('jsonwebtoken');
 const success = require('../lib/status').sendSuccessStatus;
 const failure = require('../lib/status').sendErrorStatus;
 
@@ -42,7 +44,22 @@ async function login(req,res,next){
         const passwordPromise = user.comparePassword(password);
         const result = await passwordPromise;
         if (result) {
-            return success(res, 200, 'user logged in successfully')
+
+            // return success(res, 200, 'user logged in successfully')
+
+            const payload = {
+                id : user.id,
+                name : user.name,
+                avatar : user.avatar
+            }
+
+            // Sign Token
+            try{
+                const token = await jwt.sign(payload,jwtKey,{expiresIn: 3600});
+                if(token) success(res,200,{token : `Bearer ${token}`});
+            }catch(error){
+                failure(res,500,'Internal server error')
+            }
         } else {
             return failure(res, 400, 'password incorrect');
         }
