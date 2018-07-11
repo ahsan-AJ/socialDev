@@ -53,11 +53,6 @@ async function login(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
 
-    const { errors, isValid } = validateRegisterInput(req.body);
-
-    if (!isValid) {
-        return failure(res, 400, errors);
-    }
 
     try {
         const user = await User.findOne({ email });
