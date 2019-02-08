@@ -77,7 +77,7 @@ async function login(req, res, next) {
                 const token = await jwt.sign(payload, jwtKey, { expiresIn: 3600 });
                 if (token) success(res, 200, { token: `Bearer ${token}` });
             } catch (error) {
-                failure(res, 500, 'Internal server error')
+              return failure(res, 500, 'Internal server error')
             }
         } else {
             return failure(res, 400, 'password incorrect');
