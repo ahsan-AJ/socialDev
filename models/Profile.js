@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const profileSchema = new mongoose.Schema({
     user : {
         type : Schema.Types.ObjectId,
-        ref : 'users'
+        ref : 'User'
     },
     handle:{
         type: String,
@@ -62,7 +62,7 @@ const profileSchema = new mongoose.Schema({
     ],
     education : [
         {
-            title : {
+            school : {
                 type : String,
                 required: true
             },
@@ -71,7 +71,7 @@ const profileSchema = new mongoose.Schema({
                 required: true
             },
             fieldOfStudy : {
-                type : Date,
+                type : String,
                 required : true
             },
             from : {
@@ -105,10 +105,7 @@ const profileSchema = new mongoose.Schema({
             type : String
         }
     },
-    date : {
-        type : Date,
-        default : Date.now
-    }
-});
+
+},{timestamps : true});
 
 module.exports = mongoose.model('Profile',profileSchema);
